@@ -1,5 +1,3 @@
---[[  K3ngx1RIV Menu (Version: 2.1.2)  ]]
-
 local Players=game:GetService("Players")
 local UIS=game:GetService("UserInputService")
 local TweenService=game:GetService("TweenService")
@@ -94,14 +92,12 @@ local REDTXT=Color3.fromRGB(255,40,40)
 local function selectTab(btn)if currentBtn then currentBtn.BackgroundColor3=C_SIDE currentBtn.TextColor3=C_MUT end;currentBtn=btn;btn.BackgroundColor3=C_BG;btn.TextColor3=REDTXT;for n,fr in pairs(tabFrames)do fr.Visible=(n==btn.Text)end end
 local buttons={}for _,n in ipairs({"Credits","Main","OP","ESP","Others","Config"})do buttons[n]=makeSideButton(n)end
 
--- Credits
 local frCredits=makeTab("Credits")
 section(frCredits,"Info:")
 local creditsLabel=Instance.new("TextLabel",frCredits);creditsLabel.BackgroundTransparency=1;creditsLabel.Font=Enum.Font.Gotham;creditsLabel.TextSize=16;creditsLabel.TextColor3=C_TXT;trackLabel(creditsLabel)
 creditsLabel.TextXAlignment=Enum.TextXAlignment.Left;creditsLabel.TextYAlignment=Enum.TextYAlignment.Top;creditsLabel.TextWrapped=true;creditsLabel.Size=UDim2.new(1,0,0,120)
 creditsLabel.Text="K3ngx1RIV Menu thanks for using it.\nBy K3ngx1RIV & Caviarfloof\nVersion: 2.1.2"
 
--- Main tab
 local frMain=makeTab("Main");section(frMain,"Player")
 
 local speedCell=cell(frMain,"Walk Speed","16")
@@ -139,7 +135,6 @@ speedIn.FocusLost:Connect(function(e)if e then local h=hum()if h then local n=to
 bindToggle(jumpCell,function(on)local h=hum()if not h then return end local n=tonumber(jumpIn.Text)or 50 pcall(function()h.UseJumpPower=true end)h.JumpPower=on and n or 50 pcall(function()h.JumpHeight=on and math.clamp(n/3,2,25) or 7.2 end)end)
 jumpIn.FocusLost:Connect(function(e)if e then local h=hum()if not h then return end local n=tonumber(jumpIn.Text)if not n then return end pcall(function()h.UseJumpPower=true end)h.JumpPower=n pcall(function()h.JumpHeight=math.clamp(n/3,2,25)end)end end)
 
--- Fly (mantido)
 local flyCell=cell(frMain,"Fly (WASD/Space/Shift)","")
 local flySpeedIn=Instance.new("TextBox",frMain)flySpeedIn.BackgroundColor3=C_SIDE;flySpeedIn.BorderSizePixel=0;flySpeedIn.PlaceholderText="Fly speed (e.g. 4)";flySpeedIn.PlaceholderColor3=C_MUT;flySpeedIn.TextColor3=C_TXT;flySpeedIn.Font=Enum.Font.Gotham;flySpeedIn.TextSize=14;flySpeedIn.Text="4";flySpeedIn.Size=UDim2.new(1,0,0,30)Instance.new("UICorner",flySpeedIn).CornerRadius=UDim.new(0,8)
 local noclipCell=cell(frMain,"Noclip (Testing Version)","")
@@ -155,7 +150,6 @@ bindToggle(flyCell,function(on)stopFly()if not on then return end local root=hrp
 		if UIS:IsKeyDown(Enum.KeyCode.Space)then dir+=Vector3.new(0,1,0)end;if UIS:IsKeyDown(Enum.KeyCode.LeftShift)then dir-=Vector3.new(0,1,0)end
 		if dir.Magnitude>0 then dir=dir.Unit*spd*30 else dir=Vector3.new()end;flyBV.Velocity=dir end)end)
 
--- >>> Noclip PRO (igual ao AimMany): atravessa ancoradas <<<
 local NOGR="AM_NoClip"
 pcall(function() PhysicsService:CreateCollisionGroup(NOGR) end)
 for _,g in ipairs(PhysicsService:GetCollisionGroups()) do
@@ -204,7 +198,6 @@ bindToggle(noclipCell,function(on)
 end)
 LP.CharacterAdded:Connect(function(c) if noclipOn then task.defer(function() setCharGroupAndStore(c,NOGR) end) end end)
 
--- OP
 local frOP=makeTab("OP");section(frOP,"FE")
 local function applySkybox(idStr)local n=idStr:gsub("%D","")if n==""then return end local asset="rbxassetid://"..n local sky=Lighting:FindFirstChildOfClass("Sky")or Instance.new("Sky",Lighting)
 	sky.SkyboxBk=asset sky.SkyboxDn=asset sky.SkyboxFt=asset sky.SkyboxLf=asset sky.SkyboxRt=asset sky.SkyboxUp=asset end
@@ -239,7 +232,6 @@ bindToggle(tpItemCell,function(on)if on then if not teleTool then teleTool=Insta
 			local mouse=LP:GetMouse();teleTool.Activated:Connect(function()local pos=mouse.Hit and mouse.Hit.p or (LP.Character and LP.Character:GetPivot().Position)or Vector3.new()local p=hrp()if p then p.CFrame=CFrame.new(pos+Vector3.new(0,3,0))end end)end
 	else if teleTool then teleTool:Destroy()teleTool=nil end end end)
 
--- ESP tab
 local frESP=makeTab("ESP")
 section(frESP,"ESP & Aim")
 
@@ -269,7 +261,6 @@ end
 colorRow(frESP,"Player color",function(c) espPlayerColor=c end)
 colorRow(frESP,"NPC color",function(c) espNPCColor=c end)
 
--- Aimbot (igual ao outro)
 local aimbotOnCell=cell(frESP,"Aimbot ON","")
 local aimTargetButton,aimRight=listCell(frESP,"Aimbot Target","Head")
 local aimOn=false
@@ -313,7 +304,6 @@ bindToggle(aimbotOnCell,function(on)aimOn=on setAimbot(on)end)
 aimTargetButton.MouseButton1Click:Connect(function()local abs=aimTargetButton.AbsolutePosition-content.AbsolutePosition
 	makeDropdown(Vector2.new(abs.X,abs.Y),{"Head","Body","Foot"},function(opt)if opt=="Body"then aimTargetName="HumanoidRootPart"aimRight.Text="Body" elseif opt=="Foot"then aimTargetName="RightFoot"aimRight.Text="Foot" else aimTargetName="Head"aimRight.Text="Head" end end)end)
 
--- >>> ESP (igual ao AimMany)
 local espOn=false
 local wantName=false
 local wantHP=false
@@ -415,7 +405,6 @@ Players.PlayerRemoving:Connect(function(p)
 	if nameBoards[p.Character] then nameBoards[p.Character]:Destroy() nameBoards[p.Character]=nil end
 end)
 
--- Others / Config (inalterado, só créditos já mudados)
 local frOthers=makeTab("Others");section(frOthers,"Work in progress");cell(frOthers,"Placeholder","")
 
 local frConfig=makeTab("Config")
